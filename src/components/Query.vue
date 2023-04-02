@@ -231,7 +231,7 @@ export default {
         console.log("valid: " + valid)
         if (valid) {
           let loadingInstance = Loading.service({fullscreen: true});
-          console.log(axios, loadingInstance)
+          // console.log(axios, loadingInstance)
           try {
             const params = {
               "destination": this.form.destination,
