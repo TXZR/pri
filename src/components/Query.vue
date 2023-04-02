@@ -57,19 +57,19 @@
         { required: true, message: 'pieces不能为空'},
         { type: 'number', message: 'pieces必须为数字值'}
       ]">
-        <el-input type="number" min="1" v-model.number="form.piece"></el-input>
+        <el-input type="number" min="1" oninput="value=value.replace(/[^\d]/g,'')" v-model.number="form.piece"></el-input>
       </el-form-item>
       <el-form-item label="Total weight (kg):" prop="weight" :rules="[
         { required: true, message: 'weight不能为空'},
         { type: 'number', message: 'weight必须为数字值'},
       ]">
-        <el-input type="number" v-model.number="form.weight"></el-input>
+        <el-input type="number" v-model.number="form.weight" oninput="if(isNaN(value)) { value = parseFloat(value) } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"></el-input>
       </el-form-item>
       <el-form-item label="Total volume (mc):" prop="volume" :rules="[
         { required: true, message: 'volume不能为空'},
         { type: 'number', message: 'volume必须为数字值'}
       ]">
-        <el-input type="number" v-model.number="form.volume"></el-input>
+        <el-input type="number" v-model.number="form.volume" oninput="if(isNaN(value)) { value = parseFloat(value) } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"></el-input>
       </el-form-item>
       <el-form-item>
         <el-checkbox v-model="form.dryIce" border>Dry ice</el-checkbox>
@@ -201,10 +201,12 @@ export default {
     this.destinationItems = []
     console.log("stations: " + stations)
     stations.stationsResponseData.stationDetails.forEach(item => {
-      this.destinationItems.push({
-        "stationCode": item["stationCode"],
-        "stationName": item["stationCode"] + "(" + item["stationName"] + ")"
-      })
+      if (item["stationName"] != "Shanghai") {
+        this.destinationItems.push({
+          "stationCode": item["stationCode"],
+          "stationName": item["stationCode"] + "(" + item["stationName"] + ")"
+        })
+      }
     })
     // this.tableData.forEach(item => item.hasChildren = true)
     console.log(res)
@@ -256,7 +258,8 @@ export default {
               "piece": parseInt(this.form.piece),
               "weight": parseFloat(this.form.weight),
               "volume": parseFloat(this.form.volume),
-              "dryIce": this.form.dryIce
+              "dryIce": this.form.dryIce,
+              "temperature" : this.form.temperature
             }
             console.log(params)
             axios.post('/api/query', params)
