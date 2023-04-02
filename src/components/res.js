@@ -15,10 +15,9 @@ export const res = {
             "stops": "Direct",
             "price": "828.43 CNY/kg",
             "surcharge": "89.22 CNY/kg",
-            "hasChildren": true,
             "children": [
                 {
-                    "id": null,
+                    "id": 3,
                     "carrier": [
                         "LH733",
                         "A/C type:744"
@@ -31,7 +30,6 @@ export const res = {
                     "stops": "13 hours",
                     "price": null,
                     "surcharge": null,
-                    "hasChildren": true,
                     "children": null
                 }
             ]
@@ -49,10 +47,9 @@ export const res = {
             "stops": "Direct",
             "price": "828.43 CNY/kg",
             "surcharge": "89.22 CNY/kg",
-            "hasChildren": true,
             "children": [
                 {
-                    "id": null,
+                    "id": 4,
                     "carrier": [
                         "LH733",
                         "A/C type:744"
@@ -65,7 +62,6 @@ export const res = {
                     "stops": "13 hours",
                     "price": null,
                     "surcharge": null,
-                    "hasChildren": true,
                     "children": null
                 }
             ]
@@ -85,10 +81,9 @@ export const res = {
             "stops": "Direct",
             "price": "1082.06 CNY/kg",
             "surcharge": "89.22 CNY/kg",
-            "hasChildren": true,
             "children": [
                 {
-                    "id": null,
+                    "id": 5,
                     "carrier": [
                         "LH8401",
                         "A/C type:77X"
@@ -101,7 +96,6 @@ export const res = {
                     "stops": "13 hours",
                     "price": null,
                     "surcharge": null,
-                    "hasChildren": true,
                     "children": null
                 }
             ]

@@ -72,8 +72,10 @@
   <el-table
         :data="tableData"
         style="width: 100%;margin-bottom: 20px;"
-        default-expand-all
         row-key="id"
+        border
+        stripe
+        highlight-current-row
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
       <el-table-column
           prop="carrier"
@@ -118,7 +120,8 @@
           label="surcharge"
           sortable>
       </el-table-column>
-    </el-table>
+  </el-table>
+  <br>
 </div>
 
 </template>
@@ -156,7 +159,7 @@ export default {
       weight : 0,
       volume : 0,
       dryIce : false,
-      tableData: res.data
+      tableData: []//res.data
     };
   },
   created() {
