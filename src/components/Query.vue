@@ -112,7 +112,7 @@
       </el-table-column>
       <el-table-column
           prop="destination"
-          label="destination"
+          label="Destination"
           sortable>
       </el-table-column>
       <el-table-column
@@ -128,12 +128,12 @@
       </el-table-column>
       <el-table-column
           prop="price"
-          label="price"
+          label="Price"
           sortable>
       </el-table-column>
       <el-table-column
           prop="surcharge"
-          label="surcharge"
+          label="Surcharge"
           sortable>
       </el-table-column>
     </el-table>
@@ -194,6 +194,7 @@ export default {
         }
       ],
       speedItems: [],
+      destinationMap: {},
       tableData: []//res.data
     };
   },
@@ -207,6 +208,7 @@ export default {
           "stationName": item["stationCode"] + "(" + item["stationName"] + ")"
         })
       }
+      this.destinationMap[item["stationCode"]] = item["stationCode"] + "(" + item["stationName"] + ")"
     })
     // this.tableData.forEach(item => item.hasChildren = true)
     console.log(res)
@@ -267,6 +269,14 @@ export default {
                   console.log(res)
                   loadingInstance.close();
                   this.tableData = res.data.data
+                  this.tableData.forEach(item => {
+                    item.origin = this.destinationMap[item.origin]
+                    item.destination = this.destinationMap[item.destination]
+                    item.children.forEach(it => {
+                      it.origin = this.destinationMap[it.origin]
+                      it.destination = this.destinationMap[it.destination]
+                    })
+                  })
                   console.log(this.tableData)
                 }).catch(err => {
               loadingInstance.close();
