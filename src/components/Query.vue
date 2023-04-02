@@ -4,7 +4,7 @@
       <el-form-item label="Destination:" prop="destination" :rules="[
         { required: true, message: 'Destination不能为空'},
       ]">
-        <el-select v-model="form.destination" filterable placeholder="请选择" >
+        <el-select v-model="form.destination" filterable placeholder="请选择">
           <el-option
               v-for="item in destinationItems"
               :key="item.stationCode"
@@ -52,7 +52,7 @@
       <div style="width: 100%; text-align: center;">
         <label label="Overall shipment information:">Overall shipment information:</label>
       </div>
-      
+
       <el-form-item label="Total no. of pieces:" prop="piece" :rules="[
         { required: true, message: 'pieces不能为空'},
         { type: 'number', message: 'pieces必须为数字值'}
@@ -79,7 +79,6 @@
     <div style="width: 100%; text-align: center;">
       <el-button type="primary" @click="query">查询</el-button>
     </div>
-    
 
     <br>
     <el-table
@@ -87,7 +86,6 @@
         style="width: 100%;margin-bottom: 20px;"
         row-key="id"
         border
-        stripe
         highlight-current-row
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
       <el-table-column
@@ -248,10 +246,10 @@ export default {
                 .then(res => {
                   console.log(res)
                   loadingInstance.close();
-
                   this.tableData = res.data.data
                   console.log(this.tableData)
                 }).catch(err => {
+              loadingInstance.close();
               console.log(err)
             })
           } catch (err) {
@@ -259,6 +257,7 @@ export default {
             loadingInstance.close();
           }
         } else {
+          this.$message.error('参数有误');
           return false;
         }
       });
@@ -272,7 +271,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-.el-table .cell{
+.el-table .cell {
   white-space: pre-line !important;
 }
 </style>
