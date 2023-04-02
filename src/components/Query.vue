@@ -16,7 +16,7 @@
       <el-form-item label="Earliest delivery date:" prop="edDate" :rules="[
         { required: true, message: 'Date不能为空'},
       ]">
-        <el-date-picker
+      <el-date-picker
             v-model="form.edDate"
             type="date"
             @change="edDateChange"
@@ -73,6 +73,11 @@
       </el-form-item>
       <el-form-item>
         <el-checkbox v-model="form.dryIce" border>Dry ice</el-checkbox>
+      </el-form-item>
+      <el-form-item v-show="tflag" label="Temperature:">
+        <el-radio v-model="form.temperature" label="1" border>-20°C ~ -10°C</el-radio>
+        <el-radio v-model="form.temperature" label="2" border>2°C ~ 8°C</el-radio>
+        <el-radio v-model="form.temperature" label="3" border>15°C ~ 25°C</el-radio>
       </el-form-item>
     </el-form>
 
@@ -148,6 +153,7 @@ export default {
   props: {},
   data() {
     return {
+      tflag : false,
       form: {
         destination: '',
         edDate: new Date(),
@@ -157,17 +163,33 @@ export default {
         weight: null,
         volume: null,
         dryIce: false,
+        temperature: null
       },
       destinationItems: [],
       commodityItems: [
         {
-          value: "General Cargo, not restr",
-          label: "General Cargo, not restr",
+          value: "General Cargo, not restr|1",
+          label: "普货",
           speedItems: [{value: "td.Pro", label: "TD PRO"}, {value: "td.Flash", label: "TD FLASH"}]
         },
         {
-          value: "Chemicals, not restr, temp-sens",
-          label: "Chemicals, not restr, temp-sens",
+          value: "General Cargo, not restr|2",
+          label: "危险品",
+          speedItems: [{value: "td.Pro", label: "TD PRO"}, {value: "td.Flash", label: "TD FLASH"}]
+        },
+        {
+          value: "Chemicals, not restr, temp-sens|1",
+          label: "普货温控货",
+          speedItems: [{value: "td.Pro", label: "TD PRO"}, {value: "td.Flash", label: "TD FLASH"}]
+        },
+        {
+          value: "Chemicals, not restr, temp-sens|2",
+          label: "危险品温控货",
+          speedItems: [{value: "td.Pro", label: "TD PRO"}, {value: "td.Flash", label: "TD FLASH"}]
+        },
+        {
+          value: "li",
+          label: "锂电池",
           speedItems: [{value: "td.Pro", label: "TD PRO"}, {value: "td.Flash", label: "TD FLASH"}]
         }
       ],
@@ -190,7 +212,7 @@ export default {
   methods: {
     edDateChange(val) {
       if (new Date() > this.getDate(val)) {
-        this.edDate = new Date()
+        this.form.edDate = new Date()
       }
     },
     getDate(strDate) {
@@ -199,25 +221,20 @@ export default {
       var date = new Date(a[0], parseInt(a[1]) - 1, a[2], 0, 0, 0)
       return date;
     },
-    dateFormat(date, fmt) { // author: meizz
-      var o = {
-        "M+": date.getMonth() + 1, // 月份
-        "d+": date.getDate(), // 日
-        "h+": date.getHours(), // 小时
-        "m+": date.getMinutes(), // 分
-        "s+": date.getSeconds(), // 秒
-        "q+": Math.floor((date.getMonth() + 3) / 3), // 季度
-        "S": date.getMilliseconds() // 毫秒
-      };
-      if (/(y+)/.test(fmt))
-        fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-      for (var k in o)
-        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-      return fmt;
-    },
     commodityChange(val) {
+      if(val === 'li') {
+        this.$message.error('锂电池暂不支持运输！');
+        this.form.commodity = null
+      }
+      if(val.indexOf('Chemicals, not restr, temp-sens') > -1) {
+        this.form.temperature = '3';
+        this.tflag = true;
+      } else {
+        this.tflag = false;
+        this.form.temperature = null;
+      }
       for (let i = 0; i < this.commodityItems.length; i++) {
-        if (this.commodityItems[i].value == val) {
+        if (this.commodityItems[i].value === val) {
           // this.speedItems = this.commodityItems[i].speedItems
           this.speedItems = this.commodityItems[i].speedItems
           this.speed = this.speedItems[0]
@@ -233,7 +250,7 @@ export default {
           try {
             const params = {
               "destination": this.form.destination,
-              "edDate": this.dateFormat(this.form.edDate, 'yyyy-MM-dd'),
+              "edDate": this.form.edDate,
               "commodity": this.form.commodity,
               "speed": this.form.speed,
               "piece": parseInt(this.form.piece),
