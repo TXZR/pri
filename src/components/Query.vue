@@ -49,27 +49,27 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <div style="width: 100%; text-align: center;">
+      <div style="width: 20%; text-align: center;">
         <label label="Overall shipment information:">Overall shipment information:</label>
       </div>
 
-      <el-form-item label="Total no. of pieces:" prop="piece" :rules="[
+      <el-form-item label="Total no. of pieces:" prop="piece"  :rules="[
         { required: true, message: 'pieces不能为空'},
         { type: 'number', message: 'pieces必须为数字值'}
       ]">
-        <el-input type="number" min="1" oninput="value=value.replace(/[^\d]/g,'')" v-model.number="form.piece"></el-input>
+        <el-input type="number" min="1" style="width:18%" oninput="value=value.replace(/[^\d]/g,'')" v-model.number="form.piece"></el-input>
       </el-form-item>
       <el-form-item label="Total weight (kg):" prop="weight" :rules="[
         { required: true, message: 'weight不能为空'},
         { type: 'number', message: 'weight必须为数字值'},
       ]">
-        <el-input type="number" v-model.number="form.weight" oninput="if(isNaN(value)) { value = parseFloat(value) } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"></el-input>
+        <el-input type="number" v-model.number="form.weight" style="width:18%" oninput="if(isNaN(value)) { value = parseFloat(value) } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+2)}"></el-input>
       </el-form-item>
       <el-form-item label="Total volume (mc):" prop="volume" :rules="[
         { required: true, message: 'volume不能为空'},
         { type: 'number', message: 'volume必须为数字值'}
       ]">
-        <el-input type="number" v-model.number="form.volume" oninput="if(isNaN(value)) { value = parseFloat(value) } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"></el-input>
+        <el-input type="number" v-model.number="form.volume" style="width:18%" oninput="if(isNaN(value)) { value = parseFloat(value) } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"></el-input>
       </el-form-item>
       <el-form-item>
         <el-checkbox v-model="form.dryIce" border>Dry ice</el-checkbox>
@@ -202,7 +202,7 @@ export default {
     this.destinationItems = []
     console.log("stations: " + stations)
     stations.stationsResponseData.stationDetails.forEach(item => {
-      if (item["stationName"] != "Shanghai") {
+      if (item["stationName"] !== "Shanghai") {
         this.destinationItems.push({
           "stationCode": item["stationCode"],
           "stationName": item["stationCode"] + "(" + item["stationName"] + ")"
