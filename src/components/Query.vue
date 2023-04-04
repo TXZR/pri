@@ -61,15 +61,36 @@
       </el-form-item>
       <el-form-item label="Total weight (kg):" prop="weight" :rules="[
         { required: true, message: 'weight不能为空'},
-        { type: 'number', message: 'weight必须为数字值'},
       ]">
-        <el-input type="number" v-model.number="form.weight" style="width:18%" oninput="if(isNaN(value)) { value = parseFloat(value) } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+2)}"></el-input>
+        <el-input type="text" v-model="form.weight" style="width:18%" oninput="
+        value = value.replaceAll(/[^\d|.]/g, '')
+        if(isNaN(value)) {
+          value = parseFloat(value)
+          if(isNaN(value)) {
+            value = '';
+          }
+        }
+        if(value.indexOf('.') > 0){
+          value=value.slice(0,value.indexOf('.')+2)
+        }"></el-input>
       </el-form-item>
+
       <el-form-item label="Total volume (mc):" prop="volume" :rules="[
-        { required: true, message: 'volume不能为空'},
-        { type: 'number', message: 'volume必须为数字值'}
+        { required: true, message: 'volume不能为空'}
       ]">
-        <el-input type="number" v-model.number="form.volume" style="width:18%" oninput="if(isNaN(value)) { value = parseFloat(value) } if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"></el-input>
+      <el-input type="text" v-model="form.volume" style="width:18%" oninput="
+        value = value.replaceAll(/[^\d|.]/g, '')
+        debugger
+        if(isNaN(value)) {
+          value = parseFloat(value)
+          if(isNaN(value)) {
+            value = '';
+          }
+        }
+        if(value.indexOf('.') > 0){
+          value=value.slice(0,value.indexOf('.')+3)
+        }
+        "></el-input>
       </el-form-item>
       <el-form-item>
         <el-checkbox v-model="form.dryIce" border>Dry ice</el-checkbox>
